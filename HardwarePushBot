@@ -1,0 +1,77 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+
+public class HardwarePushbot {
+
+    //Motors for wheels
+    public DcMotor leftFrontDrive   = null;
+    public DcMotor rightFrontDrive  = null;
+    public DcMotor leftBackDrive = null;
+    public DcMotor rightBackDrive = null;
+
+    //Motors for intake
+    public DcMotor leftIntake = null;
+    public DcMotor rightIntake = null;
+
+    //Hardware Map
+    HardwareMap hwMap           =  null;
+
+
+    /* Constructor */
+    public HardwarePushbot(){
+
+    }
+
+    /* Initialize standard Hardware interfaces */
+    public void init(HardwareMap ahwMap) {
+        // Save reference to Hardware map
+        hwMap = ahwMap;
+
+        // Define and Initialize Motors
+        //Wheel Motors
+        leftFrontDrive  = hwMap.get(DcMotor.class, "lfd");
+        rightFrontDrive = hwMap.get(DcMotor.class, "rfd");
+        leftBackDrive = hwMap.get(DcMotor.class, "lbd");
+        rightBackDrive= hwMap.get(DcMotor.class, "rbd");
+        //Intake Motors
+        leftIntake = hwMap.get(DcMotor.class, "lIntake");
+        rightIntake = hwMap.get(DcMotor.class, "rIntake");
+
+        //sets the direction of the motors
+        //Wheel Motors
+        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        //Intake Motors
+        leftIntake.setDirection(DcMotor.Direction.FORWARD);
+        rightIntake.setDirection(DcMotor.Direction.REVERSE);
+
+
+
+        // Set all motors to zero power
+        //Wheel Motors
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
+        //Intake Motors
+        leftIntake.setPower(0);
+        rightIntake.setPower(0);
+
+        // Set all motors to run without encoders.
+        // May want to use RUN_USING_ENCODERS if encoders are installed.
+        //Wheel Motors
+        leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //Intake Motors
+        leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+    }
