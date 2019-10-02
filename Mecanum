@@ -1,0 +1,64 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+
+@TeleOp(name= "RunTeleOp", group="Pushbot")
+public class Mecanum extends LinearOpMode {
+
+    HardwarePushbot robot   = new HardwarePushbot();
+    //Wheels
+    public DcMotor leftFrontDrive   = null;
+    public DcMotor rightFrontDrive  = null;
+    public DcMotor leftBackDrive = null;
+    public DcMotor rightBackDrive = null;
+
+
+
+
+    @Override
+    public void runOpMode() {
+
+
+        /* Initialize the hardware variables.
+         * The init() method of the hardware class does all the work here
+         */
+        robot.init(hardwareMap);
+
+
+        // Send telemetry message to signify robot waiting;
+        telemetry.addData("Say", "Hello Driver");    //
+        telemetry.update();
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+
+        // run until the end of the match (driver presses STOP)
+        while (opModeIsActive()) {
+            double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
+            double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
+            double rightX = gamepad1.right_stick_x;
+            final double v1 = r * Math.cos(robotAngle) + rightX;
+            final double v2 = r * Math.sin(robotAngle) - rightX;
+            final double v3 = r * Math.sin(robotAngle) + rightX;
+            final double v4 = r * Math.cos(robotAngle) - rightX;
+
+            leftFrontDrive.setPower(v1);
+            rightFrontDrive.setPower(v2);
+            leftBackDrive.setPower(v3);
+            rightBackDrive.setPower(v4);
+
+        }
+
+        // Send telemetry message to signify robot running;
+        telemetry.addData("left",  "%.2f", leftFrontDrive);
+        telemetry.addData("right", "%.2f", rightFrontDrive);
+        telemetry.update();
+
+        // Pace this loop so jaw action is reasonable speed.
+        sleep(50);
+
+    }
+}
