@@ -1,0 +1,91 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+
+@TeleOp(name= "RunTeleOp", group="Pushbot")
+public class RunTeleOp extends LinearOpMode {
+
+    HardwarePushbot robot   = new HardwarePushbot();
+    //Wheels
+    public DcMotor leftFrontDrive   = null;
+    public DcMotor rightFrontDrive  = null;
+    public DcMotor leftBackDrive = null;
+    public DcMotor rightBackDrive = null;
+    //Intake
+    public DcMotor leftIntake = null;
+    public DcMotor rightIntake = null;
+
+    //Set to 0 so that the wheels don't move unless the driver is controlling it.
+    public double rightDrive = 0.0;
+    public double leftDrive = 0.0;
+
+
+    //Sets default intake value to 0
+    //Where should these be so that the value resets to 0 if the button isn't pressed?
+    public double leftIntakeValue = 0.0;
+    public double rightIntakeValue = 0.0;
+
+
+
+    @Override
+    public void runOpMode() {
+
+
+        /* Initialize the hardware variables.
+         * The init() method of the hardware class does all the work here
+         */
+        robot.init(hardwareMap);
+
+
+        // Send telemetry message to signify robot waiting;
+        telemetry.addData("Say", "Hello Driver");    //
+        telemetry.update();
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+
+        // run until the end of the match (driver presses STOP)
+        while (opModeIsActive()) {
+            rightDrive = -gamepad1.right_stick_y;
+            leftDrive = -gamepad1.left_stick_y;
+
+
+            if(rightDrive > 0.5 || rightDrive < -0.5){
+                robot.rightFrontDrive.setPower(rightDrive);
+                robot.rightBackDrive.setPower(rightDrive);
+            }
+
+            if(leftDrive > 0.5 || leftDrive < -0.5){
+                robot.leftFrontDrive.setPower(leftDrive);
+                robot.leftBackDrive.setPower(leftDrive);
+            }
+
+            //When the a button is pressed, the intake takes something in.
+            while(gamepad1.a){
+
+                robot.leftIntake.setPower(1.0);
+                robot.rightIntake.setPower(1.0);
+
+            }
+            //When the b button is pressed, the intake starts in reverse.
+            while(gamepad1.b) {
+                robot.leftIntake.setPower(-1.0);
+                robot.rightIntake.setPower(-1.0);
+
+            }
+
+        }
+
+        // Send telemetry message to signify robot running;
+        telemetry.addData("left",  "%.2f", leftFrontDrive);
+        telemetry.addData("right", "%.2f", rightFrontDrive);
+        telemetry.update();
+
+        // Pace this loop so jaw action is reasonable speed.
+        sleep(50);
+
+    }
+}
