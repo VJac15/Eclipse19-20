@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
-@TeleOp(name= "RunTeleOp", group="Pushbot")
-public class Mecanum extends LinearOpMode {
+@TeleOp(name= "MecnumDrive", group="Pushbot")
+public class Mecnum extends LinearOpMode {
 
     HardwarePushbot robot   = new HardwarePushbot();
     //Wheels
@@ -27,6 +27,10 @@ public class Mecanum extends LinearOpMode {
          */
         robot.init(hardwareMap);
 
+        leftFrontDrive  = hardwareMap.get(DcMotor.class, "lfd");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "rfd");
+        leftBackDrive = hardwareMap.get(DcMotor.class, "lbd");
+        rightBackDrive= hardwareMap.get(DcMotor.class, "rbd");
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
