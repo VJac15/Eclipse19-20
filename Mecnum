@@ -41,18 +41,117 @@ public class Mecnum extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
-            double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
-            double rightX = gamepad1.right_stick_x;
-            final double v1 = r * Math.cos(robotAngle) + rightX;
-            final double v2 = r * Math.sin(robotAngle) - rightX;
-            final double v3 = r * Math.sin(robotAngle) + rightX;
-            final double v4 = r * Math.cos(robotAngle) - rightX;
+            double speed = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
+            //speed is distance between origin and left joystick position
+            double angle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
+            //angle is the angle of the left joystick-pi/4
+            double turn = gamepad1.right_stick_x;
+            //turn is the x value of the right joystick
 
-            leftFrontDrive.setPower(v1);
-            rightFrontDrive.setPower(v2);
-            leftBackDrive.setPower(v3);
-            rightBackDrive.setPower(v4);
+
+            final double leftFrontPower = speed * Math.sin(angle) + turn;
+            final double rightFrontPower = speed * Math.cos(angle) - turn;
+            final double leftBackPower = speed * Math.cos(angle) + turn;
+            final double rightBackPower = speed * Math.sin(angle) - turn;
+
+
+            leftFrontDrive.setPower(leftFrontPower);
+            rightFrontDrive.setPower(rightFrontPower);
+            leftBackDrive.setPower(leftBackPower);
+            rightBackDrive.setPower(rightBackPower);
+
+            /*
+                Examples
+
+                Example 1:
+                left joystick (1,0)
+                speed is 1
+                angle is -pi/4
+                turn is 0
+
+                left front wheel = 1 * -sqrt2/2 = -sqrt2/2
+                right front wheel: 1 * sqrt2/2 = sqrt2/2
+                left back wheel: 1 * sqrt2/2 = sqrt2/2
+                right back wheel = 1 * -sqrt2/2 = -sqrt2/2
+
+                Example 2:
+                left joystick: (1,0)
+                right joystick: (1,0)
+                speed is 1
+                angle is -pi/4
+                turn is 1
+
+                left front wheel: 1 * -sqrt2/2 + 1= -sqrt2/2 + 1 = .29289
+                right front wheel: 1 * sqrt2/2 -1 = sqrt2/2 - 1 = -.29289
+                left back wheel: 1 * sqrt2/2 +1 = sqrt2/2 + 1 = 1.707
+                right back wheel: 1 * -sqrt2/2 -1 = -sqrt2/2 - 1 = -1.707
+
+                power of wheels (least to greatest)
+                right back wheel, right front wheel, left front wheel, left back wheel
+
+                Expected Outcome: robot goes straight to the right
+
+                Example 3:
+                left joystick: (0,0)
+                right joystick: (1,0)
+                speed is 0
+                angle is -pi/4
+                turn is 1
+
+                left front wheel: 0 + -pi/4 +1 = 1
+                right front wheel: 0 -1 = -1
+                left back wheel: 0 + 1 = 1
+                right back wheel: 0 - 1 = -1
+
+                Expected Outcome: robot turns to the right
+
+                Example 4:
+                left joystick: (0,1)
+                right joystick: (0,0)
+
+                speed: 1
+                angle: pi/4
+                turn: 0
+
+                left front wheel: 1 * sqrt2/2 = sqrt2/2
+                right front wheel: 1 * sqrt2/2 = sqrt 2/2
+                left back wheel: 1 * sqrt2/2 = sqrt 2/2
+                right back wheel: 1 * sqrt2/2 = sqrt 2/2
+
+                Expected Outcome: Robot moves straight
+
+                Example 5:
+                left joystick: (0,1)
+                right joystick: (0,1)
+                speed: 1
+                angle: pi/4
+                turn: 0
+
+                left front wheel: 1 * sqrt2/2 + 1 = sqrt2/2 + 1
+                right front wheel: 1 * sqrt2/2 + 1 = sqrt2/2 + 1
+                left back wheel: 1 * sqrt2/2 + 1 = sqrt2/2 + 1
+                right back wheel: 1 * sqrt2/2 + 1 = sqrt2/2 + 1
+
+                Expected Outcome: robot moves forwards, but faster than in example 4
+
+                Example 6:
+                left joystick: (-1, 0)
+                right joystick: (1,0)
+                speed: 1
+                angle: 3pi/4
+                turn: 1
+
+                left front wheel: 1 * sqrt2/2 + 1
+                right front wheel: 1 * -sqrt2/2 - 1
+                left back wheel: 1 * -sqrt2/2 + 1
+                right back wheel: 1 * sqrt2/2 + 1
+
+                leftFrontPower = speed * Math.sin(angle) + turn;
+                rightFrontPower = speed * Math.cos(angle) - turn;
+                leftBackPower = speed * Math.cos(angle) + turn;
+                rightBackPower = speed * Math.sin(angle) - turn;
+
+                 */
 
         }
 
