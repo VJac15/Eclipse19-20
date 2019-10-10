@@ -1,0 +1,69 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+@Autonomous(name="AutonPushbot", group="Pushbot")
+@Disabled
+public class RunAutonLeft extends LinearOpMode {
+
+    HardwarePushbot robot = new HardwarePushbot();
+    private ElapsedTime runtime = new ElapsedTime();
+
+    public DcMotor leftFrontDrive   = null;
+    public DcMotor rightFrontDrive  = null;
+    public DcMotor leftBackDrive = null;
+    public DcMotor rightBackDrive = null;
+
+    public void driveMethod(double rightSpeed, double leftSpeed, double secs) {
+        // The motors are being set to a speed given within the parameters
+        robot.rightFrontDrive.setPower(rightSpeed);
+        robot.rightBackDrive.setPower(rightSpeed);
+        robot.leftFrontDrive.setPower(leftSpeed);
+        robot.leftBackDrive.setPower(leftSpeed);
+
+    @Override
+    public void runOpMode() {
+
+        /*
+         * Initialize the drive system variables.
+         * The init() method of the hardware class does all the work here
+         */
+        robot.init(hardwareMap);
+
+        // Send telemetry message to signify robot waiting;
+        telemetry.addData("Status", "Ready to run");    //
+        telemetry.update();
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+
+
+        // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
+        /*
+        1. Move the foundation back to the building area
+        2.
+         */
+        /*
+        1.
+            a. Move forward to the opponent's foundation
+            b. Turn left
+            c. Push the foundation back until it hits the wall
+            d. Turn left
+            e. Move forward until the foundation is in the building area.
+         */
+        //1a
+        driveMethod(1,1, 4);
+        //1b
+        driveMethod(1,0,1.3);
+        //1c
+        driveMethod(1,1,2);
+        //1d
+        driveMethod(1,0,1.3);
+        //1e
+        driveMethod(1,1,4);
+}
