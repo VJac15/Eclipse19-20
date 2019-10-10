@@ -1,78 +1,101 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@Disabled
-public class HardwarePushbot {
 
-    //Motors for wheels
+@TeleOp(name= "RunTeleOp", group="Pushbot")
+public class RunTeleOp extends LinearOpMode {
+
+    HardwarePushbot robot   = new HardwarePushbot();
+    //Wheels
     public DcMotor leftFrontDrive   = null;
     public DcMotor rightFrontDrive  = null;
     public DcMotor leftBackDrive = null;
     public DcMotor rightBackDrive = null;
+    //Intake
+  //  public DcMotor leftIntake = null;
+  //  public DcMotor rightIntake = null;
 
-    //Motors for intake
-    public DcMotor leftIntake = null;
-    public DcMotor rightIntake = null;
-
-    //Hardware Map
-    HardwareMap hwMap           =  null;
+    //Set to 0 so that the wheels don't move unless the driver is controlling it.
+    public double rightDrive = 0.0;
+    public double leftDrive = 0.0;
 
 
-    /* Constructor */
-    public HardwarePushbot(){
-
-    }
-
-    /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap) {
-        // Save reference to Hardware map
-        hwMap = ahwMap;
-
-        // Define and Initialize Motors
-        //Wheel Motors
-        leftFrontDrive  = hwMap.get(DcMotor.class, "lfd");
-        rightFrontDrive = hwMap.get(DcMotor.class, "rfd");
-        leftBackDrive = hwMap.get(DcMotor.class, "lbd");
-        rightBackDrive= hwMap.get(DcMotor.class, "rbd");
-        //Intake Motors
-      //  leftIntake = hwMap.get(DcMotor.class, "lIntake");
-      //  rightIntake = hwMap.get(DcMotor.class, "rIntake");
-
-        //sets the direction of the motors
-        //Wheel Motors
-        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
-        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        //Intake Motors
-      //  leftIntake.setDirection(DcMotor.Direction.FORWARD);
-       // rightIntake.setDirection(DcMotor.Direction.REVERSE);
+    //Sets default intake value to 0
+    //Where should these be so that the value resets to 0 if the button isn't pressed?
+ //   public double leftIntakeValue = 0.0;
+ //   public double rightIntakeValue = 0.0;
 
 
 
-        // Set all motors to zero power
-        //Wheel Motors
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        //Intake Motors
-     //   leftIntake.setPower(0);
-      //  rightIntake.setPower(0);
+    @Override
+    public void runOpMode() {
 
-        // Set all motors to run without encoders.
-        // May want to use RUN_USING_ENCODERS if encoders are installed.
-        //Wheel Motors
-        leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //Intake Motors
-       // leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-       // rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        /* Initialize the hardware variables.
+         * The init() method of the hardware class does all the work here
+         */
+        robot.init(hardwareMap);
+
+        leftFrontDrive  = hardwareMap.get(DcMotor.class, "lfd");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "rfd");
+        leftBackDrive = hardwareMap.get(DcMotor.class, "lbd");
+        rightBackDrive= hardwareMap.get(DcMotor.class, "rbd");
+
+
+        // Send telemetry message to signify robot waiting;
+        telemetry.addData("Say", "Hello Driver");    //
+        telemetry.update();
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+
+        // run until the end of the match (driver presses STOP)
+        while (opModeIsActive()) {
+            rightDrive = -gamepad1.right_stick_y;
+            leftDrive = -gamepad1.left_stick_y;
+
+
+            if(rightDrive > 0.5 || rightDrive < -0.5){
+                robot.rightFrontDrive.setPower(rightDrive);
+                robot.rightBackDrive.setPower(rightDrive);
+            }
+            if(leftDrive > 0.5 || leftDrive < -0.5){
+                robot.leftFrontDrive.setPower(leftDrive);
+                robot.leftBackDrive.setPower(leftDrive);
+            }else{
+                robot.leftFrontDrive.setPower(0);
+                robot.leftBackDrive.setPower(0);
+                robot.rightFrontDrive.setPower(0);
+                robot.rightBackDrive.setPower(0);
+
+            }
+
+            //When the a button is pressed, the intake takes something in.
+       /*     while(gamepad1.a){
+
+                robot.leftIntake.setPower(1.0);
+                robot.rightIntake.setPower(1.0);
+
+            }
+            //When the b button is pressed, the intake starts in reverse.
+            while(gamepad1.b) {
+                robot.leftIntake.setPower(-1.0);
+                robot.rightIntake.setPower(-1.0);
+
+            }
+*/
+        }
+
+        // Send telemetry message to signify robot running;
+        telemetry.addData("left",  "%.2f", leftFrontDrive);
+        telemetry.addData("right", "%.2f", rightFrontDrive);
+        telemetry.update();
+
+        // Pace this loop so jaw action is reasonable speed.
+        sleep(50);
+
     }
 }
