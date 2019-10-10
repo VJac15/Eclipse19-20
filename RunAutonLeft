@@ -13,11 +13,13 @@ public class RunAutonLeft extends LinearOpMode {
 
     HardwarePushbot robot = new HardwarePushbot();
     private ElapsedTime runtime = new ElapsedTime();
-
+    /*
     public DcMotor leftFrontDrive   = null;
     public DcMotor rightFrontDrive  = null;
     public DcMotor leftBackDrive = null;
     public DcMotor rightBackDrive = null;
+    */
+     */
 
     public void driveMethod(double rightSpeed, double leftSpeed, double secs) {
         // The motors are being set to a speed given within the parameters
@@ -27,7 +29,7 @@ public class RunAutonLeft extends LinearOpMode {
         robot.leftBackDrive.setPower(leftSpeed);
 
     @Override
-    public void runOpMode() {
+    public void runOpMode(){
 
         /*
          * Initialize the drive system variables.
