@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="AutonPushbot", group="Pushbot")
-@Disabled
 public class RunAutonLeft extends LinearOpMode {
 
     HardwarePushbot robot = new HardwarePushbot();
@@ -19,17 +18,29 @@ public class RunAutonLeft extends LinearOpMode {
     public DcMotor leftBackDrive = null;
     public DcMotor rightBackDrive = null;
     */
-     */
+
 
     public void driveMethod(double rightSpeed, double leftSpeed, double secs) {
         // The motors are being set to a speed given within the parameters
-        robot.rightFrontDrive.setPower(rightSpeed);
-        robot.rightBackDrive.setPower(rightSpeed);
-        robot.leftFrontDrive.setPower(leftSpeed);
-        robot.leftBackDrive.setPower(leftSpeed);
+        runtime.reset();
+        while (runtime.seconds() < secs) {
+            robot.rightFrontDrive.setPower(rightSpeed);
+            robot.rightBackDrive.setPower(rightSpeed);
+            robot.leftFrontDrive.setPower(leftSpeed);
+            robot.leftBackDrive.setPower(leftSpeed);
+        }
+
+    }
+
+    public void pullSystem(double position) {
+        robot.rightPullSystem.setPosition(position);
+        robot.leftPullSystem.setPosition(position);
+
+    }
+
 
     @Override
-    public void runOpMode(){
+    public void runOpMode() {
 
         /*
          * Initialize the drive system variables.
@@ -52,20 +63,25 @@ public class RunAutonLeft extends LinearOpMode {
          */
         /*
         1.
-            a. Move forward to the opponent's foundation
-            b. Turn left
-            c. Push the foundation back until it hits the wall
-            d. Turn left
-            e. Move forward until the foundation is in the building area.
-         */
-        //1a
-        driveMethod(1,1, 4);
-        //1b
-        driveMethod(1,0,1.3);
-        //1c
-        driveMethod(1,1,2);
-        //1d
-        driveMethod(1,0,1.3);
-        //1e
-        driveMethod(1,1,4);
+            Turn, move forward, turn right, move to foundation, latch on, move backwards
+
+        */
+
+
+        //move to foundation and latch on
+        driveMethod(1, 1, .6);
+        driveMethod(1, -1, .575);
+        driveMethod(1, 1, 2.4);
+        driveMethod(-1, 1, .575);
+        driveMethod(1, 1, 1.2);
+        pullSystem(1);
+
+        //reposition foundation and unlatch
+        driveMethod(-1, -1, 1.8);
+        pullSystem(0);
+        //turn and return to line
+        driveMethod(-1, 1, .575);
+        driveMethod(1, 1, 2.4);
+
+    }
 }
