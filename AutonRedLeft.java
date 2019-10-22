@@ -36,7 +36,10 @@ public class AutonRedLeft extends LinearOpMode {
     public void turnRight() {
         driveMethod(-1,1,.565);
     }
+    public void doNothing(double secs) {
+        driveMethod(0,0,secs);
 
+    }
 
     @Override
     public void runOpMode() {
@@ -52,6 +55,11 @@ public class AutonRedLeft extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+        
+        // Wait for two seconds before starting
+        doNothing(2);
+        
+        
         //Move to foundation and latch on (approx 5 secs)
         driveMethod(1,1,1.2);
         turnRight();
