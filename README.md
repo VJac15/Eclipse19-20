@@ -12,4 +12,4 @@ and the timing of the turn left and right (those can be edited through changing 
 under the turnRight and turnLeft methods).
 
 DoNothing method:
-after the driver presses play, the robot does nothing for two seconds. This can be changed if the robot goes over 30 seconds, but keep it at least one second. 
+after the driver presses play, the robot does nothing for two seconds. This can be changed (edit secs value when the function is called) if the robot goes over 30 seconds, but keep it at least one second. 
