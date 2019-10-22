@@ -3,7 +3,7 @@
 
 Code for autonomous and teleop phases of FTC Skystone 2019 for Alpharetta Robotics Eclipse. 
 
-10.21.19
+10.22.19
 
 For testing the code:
 test AutonBlueRight, AutonBlueLeft, AutonRedRight, and AutonRedLeft.
