@@ -1,7 +1,7 @@
 # Eclipse19-20
 
 
-Code for autonomous and teleop phases of FTC Skystone 2019. 
+Code for autonomous and teleop phases of FTC Skystone 2019 for Alpharetta Robotics Eclipse. 
 
 10.31.19
 
